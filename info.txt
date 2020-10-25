@@ -1,0 +1,4 @@
+source: https://www.ternarydata.com/news/use-python-and-google-cloud-to-schedule-a-file-download-and-load-into-bigquery-3p3aw
+
+avro:
+https://www.perfectlyrandom.org/2019/11/29/handling-avro-files-in-python/
