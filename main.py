@@ -1,7 +1,7 @@
 # python
 import os
 import json
-import datetime
+from datetime import datetime
 import urllib.parse
 import urllib.request
 import avro.schema
@@ -38,12 +38,16 @@ schema = avro.schema.parse(schema)
 def convert_data_types(record):
   # dates
   date_time_str = record["date"]
-  date_time_obj = datetime.datetime.strptime(date_time_str, '%Y-%m-%d')
-  days_since_epoch = (datetime.datetime(1970,1,1) - date_time_obj).days
+  date_time_obj = datetime.strptime(date_time_str, '%Y-%m-%d')
+  days_since_epoch = (datetime(1970,1,1) - date_time_obj).days
   # floats
   data_point = float(record["value"])
   # return
   return days_since_epoch, data_point
+
+def get_datetime():
+  #return str like: 2020_10_25__21_34_43
+  return datetime.now().strftime("%Y_%m_%d__%H_%M_%S")
 
 
 # function
@@ -72,7 +76,7 @@ def hello_gcs(event, context):
   writer.close()
 
   # set Blob
-  file_name = '{}_{}.{}'.format(series_id, context.timestamp, file_type)
+  file_name = '{}_{}.{}'.format(series_id, get_datetime(), file_type)
   blob = storage.Blob(file_name, bucket)
 
   # upload the file to GCS
@@ -82,5 +86,3 @@ def hello_gcs(event, context):
   print('Event type: {}'.format(context.event_type))
   print("""This Function was triggered by messageId {} published at {}
   """.format(context.event_id, context.timestamp))
-
-
